@@ -2,22 +2,42 @@
     margin: 0;
     padding: 0;
 }
+body{
+    width: 100%;
+}
 
+/* ###### Full Grid ###### */
+#gridRow{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .rowDiv{
     display: flex;
 }
+/* ^^^^^ Full Grid ^^^^^ */
+
 .gridCell{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 30px;
-    height: 30px;
-    background-color: burlywood;
-    border: inset 1px #bf9f75;
+    min-width: 55px;
+    min-height: 55px;
+    background-color: #344829;
+    border: inset 1px #304326;
 }
-/* .gridCell:hover{
-    background-color: tan;
-} */
 .cellEnabled{
-    background-color: brown;
+    background-color: #5e4c3c;
+}
+
+.cellContainer1Plant{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.singlePlant{
+    padding-top: 15px;
 }
