@@ -4,46 +4,112 @@ const cols = 15;
 let grid = {};
 
 const updateTimer = (cell, timer, cellEl) => {
-    if (cell.enabled === true && cell.intervalCompleted === false) {
-        if(cell.timerValue < 5){
-
-            cell.timerValue++;
-            timer.textContent = cell.timerValue;
+    if(cell.plantStage === 1){
+        if (cell.enabled === true && cell.intervalCompleted === false) {
+            if(cell.timerValue < 5){
+                cell.timerValue++
+                timer.textContent = cell.timerValue
+            } else {
+                cell.intervalCompleted = true
+            }
         } else {
-            cell.intervalCompleted = true
+            timer.textContent = ''
+            cellEl.classList.remove('cellEnabled');
+            cell.enabled = false
+            clearInterval(cell.timerID)
+            console.log(cell)
         }
-    } else {
-        timer.textContent = ''
-        cellEl.classList.remove('cellEnabled');
-        cell.enabled = false;
-        clearInterval(cell.timerID);
-        console.log(cell)
+    } else if(cell.plantStage === 2){
+        if (cell.enabled === true && cell.intervalCompleted === false) {
+            if(cell.timerValue < 10){
+                cell.timerValue++
+                timer.textContent = cell.timerValue
+            } else {
+                cell.intervalCompleted = true
+            }
+        } else {
+            timer.textContent = ''
+            cellEl.classList.remove('cellEnabled')
+            cell.enabled = false
+            clearInterval(cell.timerID)
+            console.log(cell)
+        }
+    } else if(cell.plantStage === 3){
+        if (cell.enabled === true && cell.intervalCompleted === false) {
+            if(cell.timerValue < 15){
+                cell.timerValue++
+                timer.textContent = cell.timerValue
+            } else {
+                cell.intervalCompleted = true
+            }
+        } else {
+            timer.textContent = ''
+            cellEl.classList.remove('cellEnabled')
+            cell.enabled = false
+            clearInterval(cell.timerID)
+            console.log(cell)
+        }
+    } else if(cell.plantStage === 4){
+        if (cell.enabled === true && cell.intervalCompleted === false) {
+            if(cell.timerValue < 20){
+                cell.timerValue++
+                timer.textContent = cell.timerValue
+            } else {
+                cell.intervalCompleted = true
+            }
+        } else {
+            timer.textContent = ''
+            cellEl.classList.remove('cellEnabled')
+            cell.enabled = false
+            clearInterval(cell.timerID)
+            console.log(cell)
+            let cellContainer = cellEl.querySelector('.cellContainer')
+            let timerContainer = cellEl.querySelector('.timerContainer')
+            let plantContainer = cellEl.querySelector('.plantContainer')
+            let seedling1or2Container = cellEl.querySelector('.seedling1or2Container')
+            let seedlings = seedling1or2Container.querySelectorAll('.fa-seedling')
+            seedlings.forEach(e => {
+                e.style.margin = "0px"
+            })
+
+            cellContainer.removeChild(timerContainer)
+
+            seedling1or2Container.style.margin = "0px"
+            plantContainer.style.height = "100%";
+
+        }
     }
 }
 
 const updateCellVisuals = (cellName, cellEl) => {
     if (grid[cellName].enabled) {
-        if((grid[cellName].plant === 0 && grid[cellName].intervalCompleted === true) 
-        || (grid[cellName].plant === 1 && grid[cellName].intervalCompleted === false)){
-
-    
-    
-    if(grid[cellName].intervalCompleted === true){
+        if((grid[cellName].plantStage === 0 && grid[cellName].intervalCompleted === true) 
+        || (grid[cellName].plantStage === 1 && grid[cellName].intervalCompleted === false)){
+            if(grid[cellName].intervalCompleted === true){
         
-                grid[cellName].plant++
+                grid[cellName].plantStage++
                 grid[cellName].intervalCompleted = false
                 
-                let cellContainer = document.createElement('div')
-                cellContainer.setAttribute('class', 'cellContainer1Plant')
+                let plantContainer = document.createElement('div')
+                plantContainer.setAttribute('class', 'plantContainer')
                 
                 const seedling = document.createElement('i')
                 seedling.setAttribute('class', 'fa-solid fa-seedling singlePlant')
-                cellContainer.appendChild(seedling)
+                
+                let seedlingContainer = document.createElement('div')
+                seedlingContainer.setAttribute('class','seedling1or2Container')
+                seedlingContainer.appendChild(seedling)
+                plantContainer.appendChild(seedlingContainer)
                 
                 let timerContainer = document.createElement('div')
                 timerContainer.setAttribute('class', 'timerContainer')
                 let timer = document.createElement('p')
                 timer.setAttribute('class', 'timer')
+
+                let cellContainer = document.createElement('div')
+                cellContainer.setAttribute('class', 'cellContainer')
+                cellContainer.appendChild(plantContainer)
+
                 timerContainer.appendChild(timer)
                 cellContainer.appendChild(timerContainer)
                 
@@ -53,6 +119,61 @@ const updateCellVisuals = (cellName, cellEl) => {
             cellEl.classList.add('cellEnabled')
 
             grid[cellName].timerID = setInterval(() => updateTimer(grid[cellName], timer, cellEl), 1000);
+        } else if((grid[cellName].plantStage === 1 && grid[cellName].intervalCompleted === true) 
+        || (grid[cellName].plantStage === 2 && grid[cellName].intervalCompleted === false)) {
+            if(grid[cellName].intervalCompleted === true){
+                grid[cellName].plantStage++
+                grid[cellName].intervalCompleted = false
+                
+                let seedlingContainer = cellEl.querySelector('.seedling1or2Container')
+
+                let firstSeedling = cellEl.querySelector('.singlePlant')
+                firstSeedling.classList.remove('singlePlant')
+
+                const seedling = document.createElement('i')
+                seedling.setAttribute('class', 'fa-solid fa-seedling')
+                seedlingContainer.appendChild(seedling)
+                
+            }
+            let timer = cellEl.querySelector('p.timer') 
+            cellEl.classList.add('cellEnabled')
+
+            grid[cellName].timerID = setInterval(() => updateTimer(grid[cellName], timer, cellEl), 1000);
+            
+        } else if((grid[cellName].plantStage === 2 && grid[cellName].intervalCompleted === true) 
+        || (grid[cellName].plantStage === 3 && grid[cellName].intervalCompleted === false)) {
+            if(grid[cellName].intervalCompleted === true){
+                grid[cellName].plantStage++
+                grid[cellName].intervalCompleted = false
+                
+                let seedlingContainer = cellEl.querySelector('.seedling1or2Container')
+
+                const seedling = document.createElement('i')
+                seedling.setAttribute('class', 'fa-solid fa-seedling')
+                seedlingContainer.appendChild(seedling)
+            }
+            let timer = cellEl.querySelector('p.timer') 
+            cellEl.classList.add('cellEnabled')
+
+            grid[cellName].timerID = setInterval(() => updateTimer(grid[cellName], timer, cellEl), 1000);
+            
+        } else if((grid[cellName].plantStage === 3 && grid[cellName].intervalCompleted === true) 
+        || (grid[cellName].plantStage === 4 && grid[cellName].intervalCompleted === false)) {
+            if(grid[cellName].intervalCompleted === true){
+                grid[cellName].plantStage++
+                grid[cellName].intervalCompleted = false
+                
+                let seedlingContainer = cellEl.querySelector('.seedling1or2Container')
+
+                const seedling = document.createElement('i')
+                seedling.setAttribute('class', 'fa-solid fa-seedling')
+                seedlingContainer.appendChild(seedling)
+            }
+            let timer = cellEl.querySelector('p.timer') 
+            cellEl.classList.add('cellEnabled')
+
+            grid[cellName].timerID = setInterval(() => updateTimer(grid[cellName], timer, cellEl), 1000);
+            
         } else {
             grid[cellName].enabled = false
         }
@@ -79,7 +200,7 @@ const printGrid = () => {
                     enabled: false,
                     timerValue: 0,
                     timerID: null,
-                    plant: 0,
+                    plantStage: 0,
                     intervalCompleted: true
                 };
             }
