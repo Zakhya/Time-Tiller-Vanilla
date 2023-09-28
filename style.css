@@ -1,0 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.rowDiv{
+    display: flex;
+}
+.gridCell{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: burlywood;
+    border: inset 1px #bf9f75;
+}
+/* .gridCell:hover{
+    background-color: tan;
+} */
+.cellEnabled{
+    background-color: brown;
+}
