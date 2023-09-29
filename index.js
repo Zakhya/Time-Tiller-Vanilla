@@ -1,16 +1,32 @@
 const gridContainer = document.querySelector('#gridContainer');
-const rows = 15;
+const rows = 12;
 const cols = 15;
 let grid = {};
 
+const createHeader = () => {
+    const headerEl = document.querySelector('header')
+    console.log(headerEl)
+
+
+}
+const createSidebar = () => {
+    const sidebarEl = document.querySelector('#sidebar')
+    console.log(sidebarEl)
+}
+const createFooter = () => {
+    const footerEl = document.querySelector('footer')
+    console.log(footerEl)
+
+}
+
 const updateTimer = (cell, timer, cellEl) => {
     if(cell.plantStage === 1){
-        if (cell.enabled === true && cell.intervalCompleted === false) {
+        if (cell.enabled === true && cell.shortIntervalCompleted === false) {
             if(cell.timerValue < 5){
                 cell.timerValue++
                 timer.textContent = cell.timerValue
             } else {
-                cell.intervalCompleted = true
+                cell.shortIntervalCompleted = true
             }
         } else {
             timer.textContent = ''
@@ -20,12 +36,12 @@ const updateTimer = (cell, timer, cellEl) => {
             console.log(cell)
         }
     } else if(cell.plantStage === 2){
-        if (cell.enabled === true && cell.intervalCompleted === false) {
+        if (cell.enabled === true && cell.shortIntervalCompleted === false) {
             if(cell.timerValue < 10){
                 cell.timerValue++
                 timer.textContent = cell.timerValue
             } else {
-                cell.intervalCompleted = true
+                cell.shortIntervalCompleted = true
             }
         } else {
             timer.textContent = ''
@@ -35,12 +51,12 @@ const updateTimer = (cell, timer, cellEl) => {
             console.log(cell)
         }
     } else if(cell.plantStage === 3){
-        if (cell.enabled === true && cell.intervalCompleted === false) {
+        if (cell.enabled === true && cell.shortIntervalCompleted === false) {
             if(cell.timerValue < 15){
                 cell.timerValue++
                 timer.textContent = cell.timerValue
             } else {
-                cell.intervalCompleted = true
+                cell.shortIntervalCompleted = true
             }
         } else {
             timer.textContent = ''
@@ -50,12 +66,12 @@ const updateTimer = (cell, timer, cellEl) => {
             console.log(cell)
         }
     } else if(cell.plantStage === 4){
-        if (cell.enabled === true && cell.intervalCompleted === false) {
+        if (cell.enabled === true && cell.shortIntervalCompleted === false) {
             if(cell.timerValue < 20){
                 cell.timerValue++
                 timer.textContent = cell.timerValue
             } else {
-                cell.intervalCompleted = true
+                cell.shortIntervalCompleted = true
             }
         } else {
             timer.textContent = ''
@@ -75,20 +91,19 @@ const updateTimer = (cell, timer, cellEl) => {
             cellContainer.removeChild(timerContainer)
 
             seedling1or2Container.style.margin = "0px"
-            plantContainer.style.height = "100%";
-
+            plantContainer.style.height = "100%"
         }
     }
 }
 
 const updateCellVisuals = (cellName, cellEl) => {
     if (grid[cellName].enabled) {
-        if((grid[cellName].plantStage === 0 && grid[cellName].intervalCompleted === true) 
-        || (grid[cellName].plantStage === 1 && grid[cellName].intervalCompleted === false)){
-            if(grid[cellName].intervalCompleted === true){
+        if((grid[cellName].plantStage === 0 && grid[cellName].shortIntervalCompleted === true) 
+        || (grid[cellName].plantStage === 1 && grid[cellName].shortIntervalCompleted === false)){
+            if(grid[cellName].shortIntervalCompleted === true){
         
                 grid[cellName].plantStage++
-                grid[cellName].intervalCompleted = false
+                grid[cellName].shortIntervalCompleted = false
                 
                 let plantContainer = document.createElement('div')
                 plantContainer.setAttribute('class', 'plantContainer')
@@ -119,11 +134,11 @@ const updateCellVisuals = (cellName, cellEl) => {
             cellEl.classList.add('cellEnabled')
 
             grid[cellName].timerID = setInterval(() => updateTimer(grid[cellName], timer, cellEl), 1000);
-        } else if((grid[cellName].plantStage === 1 && grid[cellName].intervalCompleted === true) 
-        || (grid[cellName].plantStage === 2 && grid[cellName].intervalCompleted === false)) {
-            if(grid[cellName].intervalCompleted === true){
+        } else if((grid[cellName].plantStage === 1 && grid[cellName].shortIntervalCompleted === true) 
+        || (grid[cellName].plantStage === 2 && grid[cellName].shortIntervalCompleted === false)) {
+            if(grid[cellName].shortIntervalCompleted === true){
                 grid[cellName].plantStage++
-                grid[cellName].intervalCompleted = false
+                grid[cellName].shortIntervalCompleted = false
                 
                 let seedlingContainer = cellEl.querySelector('.seedling1or2Container')
 
@@ -140,11 +155,11 @@ const updateCellVisuals = (cellName, cellEl) => {
 
             grid[cellName].timerID = setInterval(() => updateTimer(grid[cellName], timer, cellEl), 1000);
             
-        } else if((grid[cellName].plantStage === 2 && grid[cellName].intervalCompleted === true) 
-        || (grid[cellName].plantStage === 3 && grid[cellName].intervalCompleted === false)) {
-            if(grid[cellName].intervalCompleted === true){
+        } else if((grid[cellName].plantStage === 2 && grid[cellName].shortIntervalCompleted === true) 
+        || (grid[cellName].plantStage === 3 && grid[cellName].shortIntervalCompleted === false)) {
+            if(grid[cellName].shortIntervalCompleted === true){
                 grid[cellName].plantStage++
-                grid[cellName].intervalCompleted = false
+                grid[cellName].shortIntervalCompleted = false
                 
                 let seedlingContainer = cellEl.querySelector('.seedling1or2Container')
 
@@ -157,11 +172,11 @@ const updateCellVisuals = (cellName, cellEl) => {
 
             grid[cellName].timerID = setInterval(() => updateTimer(grid[cellName], timer, cellEl), 1000);
             
-        } else if((grid[cellName].plantStage === 3 && grid[cellName].intervalCompleted === true) 
-        || (grid[cellName].plantStage === 4 && grid[cellName].intervalCompleted === false)) {
-            if(grid[cellName].intervalCompleted === true){
+        } else if((grid[cellName].plantStage === 3 && grid[cellName].shortIntervalCompleted === true) 
+        || (grid[cellName].plantStage === 4 && grid[cellName].shortIntervalCompleted === false)) {
+            if(grid[cellName].shortIntervalCompleted === true){
                 grid[cellName].plantStage++
-                grid[cellName].intervalCompleted = false
+                grid[cellName].shortIntervalCompleted = false
                 
                 let seedlingContainer = cellEl.querySelector('.seedling1or2Container')
 
@@ -185,7 +200,7 @@ const updateCellVisuals = (cellName, cellEl) => {
     }
 }
 
-const printGrid = () => {
+const createGrid = () => {
     for (let i = 0; i < rows; i++) {
         let rowDiv = document.createElement('div');
         rowDiv.classList.add('rowDiv');
@@ -201,7 +216,7 @@ const printGrid = () => {
                     timerValue: 0,
                     timerID: null,
                     plantStage: 0,
-                    intervalCompleted: true
+                    shortIntervalCompleted: true
                 };
             }
 
@@ -227,5 +242,10 @@ const printGrid = () => {
         gridContainer.appendChild(rowDiv);
     }
 }
-
-printGrid();
+const createUI = () => {
+    createHeader()
+    createSidebar()
+    createGrid()
+    createFooter()
+}
+createUI()
