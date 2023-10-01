@@ -127,14 +127,17 @@ footer{
     flex-grow: 50%;
     padding-top: 15px;
 }
-.fa-seedling{
+.fa-seedling, .fa-tree{
     font-size: 15px;
     text-align: center;
     width: 50%;
     margin-top: 3px;
 }
-.singlePlant{
-    margin-top: 17px;
+.fa-tree{
+    font-size: 20px;
+}
+.margin-top{
+    margin-top: 10px;
 }
 
 #sidebar{
