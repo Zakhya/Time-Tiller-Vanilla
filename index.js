@@ -15,6 +15,57 @@ const createFooter = () => {
 
 }
 
+var startButtonEl = document.querySelector('.startButton')
+var containerEl = document.querySelector(".radialTextContainer")
+var secEl = document.querySelector(".sec")
+var minEl = document.querySelector(".min")
+let isPaused = false
+let timerValue = 0;
+let interval;
+let radialTimerActive = false
+
+
+startButtonEl.addEventListener('click', e => {
+    isPaused = !isPaused;
+    
+    if (isPaused) {
+        clearInterval(interval);
+    } else {
+        startTimer(minEl, secEl, containerEl, isPaused, timerValue);
+    }
+})
+
+
+function startTimer(minEl, secEl, containerEl, isPaused, timerValue){
+    var num = 360;
+    radialTimerActive = true
+    interval = setInterval(()=>{
+        if(timerValue>=0 && !isPaused){
+            minEl.textContent = `${Math.floor(timerValue/60)}`
+            if(timerValue%60 <10){
+                secEl.textContent = `0${(timerValue%60)}`
+            }
+            else{
+                secEl.textContent = `${(timerValue%60)}`
+            }
+            
+            containerEl.style.setProperty("--a",num+"deg")
+            
+            const a = containerEl.style.getPropertyValue("--a");
+            console.log(a);
+            
+            containerEl.style.background = ` background: conic-gradient(#4CAF50 var(--a), #4CAF50 0deg, #AED581 0deg, #AED581 360deg);`
+            num = num - (num / timerValue);
+            timerValue--;
+        }
+        else{
+            radialTimerActive = false
+            clearInterval(interval)
+        }
+    },1000)
+}
+
+
 const popluateCell = (type, numberOf, cellEl) =>{
     console.log(cellEl.querySelector('.seedling1or2Container') === null)
     if(numberOf === 1) {
@@ -238,7 +289,7 @@ const updateLongTimerID = (cell, timer, cellEl) => {
     console.log(cell.plantStage)
     if(cell.plantStage === '1seedling' && cell.longIntervalCompleted === false){
         if(cell.timerValue < 10){
-            cell.timerValue++
+            cell.timerValue--
             timer.textContent = cell.timerValue
         } else {
             cell.longIntervalCompleted = true
@@ -246,21 +297,21 @@ const updateLongTimerID = (cell, timer, cellEl) => {
         }
     } else if(cell.plantStage === '2seedling' && cell.longIntervalCompleted === false){
         if(cell.timerValue < 10){
-            cell.timerValue++
+            cell.timerValue--
             timer.textContent = cell.timerValue
         } else {
             cell.longIntervalCompleted = true
         }
     }else if(cell.plantStage === '3seedling' && cell.longIntervalCompleted === false){
         if(cell.timerValue < 15){
-            cell.timerValue++
+            cell.timerValue--
             timer.textContent = cell.timerValue
         } else {
             cell.longIntervalCompleted = true
         }
     }else if(cell.plantStage === '4seedling' && cell.longIntervalCompleted === false){
         if(cell.timerValue < 20){
-            cell.timerValue++
+            cell.timerValue--
             timer.textContent = cell.timerValue
         } else {
             cell.longIntervalCompleted = true
@@ -288,13 +339,18 @@ const updateLongTimerID = (cell, timer, cellEl) => {
 }
 
 const updateTimer = (cell, timer, cellEl) => {
+    console.log(timerValue)
+    console.log(cell.timerValue)
     if(cell.plantStage === '1seedling'){
         if (cell.enabled === true && cell.shortIntervalCompleted === false) {
-            if(cell.timerValue < 5){
-                cell.timerValue++
+            if(cell.timerValue > 0){
+                cell.timerValue--
                 timer.textContent = cell.timerValue
             } else {
                 cell.shortIntervalCompleted = true
+                clearInterval(interval)
+                timerValue = 10
+               
             }
         } else {
             timer.textContent = ''
@@ -311,10 +367,16 @@ const updateTimer = (cell, timer, cellEl) => {
         console.log(cell)
         if (cell.enabled === true && cell.shortIntervalCompleted === false) {
             if(cell.timerValue < 10){
+                if(timerValue === 0){
+                    timerValue = 5
+                    startTimer(minEl, secEl, containerEl, isPaused, timerValue);
+                }
                 cell.timerValue++
                 timer.textContent = cell.timerValue
             } else {
                 cell.shortIntervalCompleted = true
+                clearInterval(interval)
+                timerValue = 0
             }
         } else {
             timer.textContent = ''
@@ -330,11 +392,17 @@ const updateTimer = (cell, timer, cellEl) => {
         }
     } else if(cell.plantStage === '3seedling'){
         if (cell.enabled === true && cell.shortIntervalCompleted === false) {
+            if(timerValue === 0){
+                timerValue = 5
+                startTimer(minEl, secEl, containerEl, isPaused, timerValue);
+            }
             if(cell.timerValue < 15){
                 cell.timerValue++
                 timer.textContent = cell.timerValue
             } else {
                 cell.shortIntervalCompleted = true
+                clearInterval(interval)
+                timerValue = 0
             }
         } else {
             timer.textContent = ''
@@ -351,11 +419,17 @@ const updateTimer = (cell, timer, cellEl) => {
         }
     } else if(cell.plantStage === '4seedling'){
         if (cell.enabled === true && cell.shortIntervalCompleted === false) {
+            if(timerValue === 0){
+                timerValue = 5
+                startTimer(minEl, secEl, containerEl, isPaused, timerValue);
+            }
             if(cell.timerValue < 20){
                 cell.timerValue++
                 timer.textContent = cell.timerValue
             } else {
                 cell.shortIntervalCompleted = true
+                clearInterval(interval)
+                timerValue = 0
             }
         } else {
             timer.textContent = ''
@@ -422,7 +496,15 @@ const updateCellVisuals = (cellName, cellEl) => {
             }
             let timer = cellEl.querySelector('p.timer') 
             cellEl.classList.add('cellEnabled')
-
+            console.log('startTimer')
+            if(radialTimerActive){
+                clearInterval(interval)
+                containerEl.style.setProperty("--a", 360 + "deg"); //timer reset
+                radialTimerActive = false
+            }
+            grid[cellName].timerValue = 6
+            timerValue = 5
+            startTimer(minEl, secEl, containerEl, isPaused, timerValue);
             grid[cellName].shortTimerID = setInterval(() => updateTimer(grid[cellName], timer, cellEl), 1000);
 
         } else if((grid[cellName].plantStage === '1seedling' && grid[cellName].shortIntervalCompleted === true) 
@@ -607,6 +689,10 @@ const createGrid = () => {
                     if(allDisabled || grid[cellName].enabled == true){
                         console.log('cell event called')
                         grid[cellName].enabled = !grid[cellName].enabled
+                        if(radialTimerActive === true){
+                            clearInterval(interval)
+                        }
+                        containerEl.style.setProperty("--a", 360 + "deg"); //timer reset
                         updateCellVisuals(cellName, cellEl);
                     }
                 });
